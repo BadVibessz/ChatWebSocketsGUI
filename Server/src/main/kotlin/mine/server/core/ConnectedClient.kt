@@ -7,6 +7,7 @@ import mine.server.core.services.LoginService
 import mine.server.core.services.RegisterService
 import mine.server.entities.User
 import org.jetbrains.exposed.sql.transactions.transaction
+import java.lang.StringBuilder
 import java.net.Socket
 
 class ConnectedClient(private val socket: Socket) {
@@ -16,14 +17,6 @@ class ConnectedClient(private val socket: Socket) {
 
     var name: String? = null
         private set(value) {
-//            value?.let { vl ->
-//                if (ConnectedClients.list.find { it.name == value } == null) {
-//                    field = vl
-//                    sendToAllConnectedClients({ if (it == this) "NAMEOK" else "NEW" },
-//                        { if (it != this) vl else "" }
-//                    )
-//                } else _communicator.sendData("REINTR:")
-//            } ?: _communicator.sendData("REINTR:")
 
             value?.let { vl ->
                 field = vl
@@ -72,6 +65,13 @@ class ConnectedClient(private val socket: Socket) {
         } else if (data.lowercase() == "register") {
             _communicator.sendData("REG:")
             return
+        } else if (data.lowercase() == "get-users") {
+            val str = StringBuilder()
+            str.append("GETUSERS:")
+            ConnectedClients.list.forEach { if (it.name != this.name) str.append("${it.name};") }
+            _communicator.sendData(str.toString())
+
+            return
         }
 
         val splitted = data.split(' ')
@@ -91,12 +91,9 @@ class ConnectedClient(private val socket: Socket) {
                 return
             }
 
-
             val succeeded = RegisterService().register(nickname, password)
 
-            if (succeeded) {
-                name = nickname
-            }
+            _communicator.sendData("REGOK:")
             return
 
         } else if (splitted[0] == "login") {
@@ -118,7 +115,7 @@ class ConnectedClient(private val socket: Socket) {
         }
 
         if (name != null)
-            sendToAllConnectedClients({ "MSG" }, { "${if (it == this) "Вы" else name}: $data" })
+            sendToAllConnectedClients({ "MSG" }, { "${if (it == this) "YOU" else name}: $data" })
         //else name = data
     }
 

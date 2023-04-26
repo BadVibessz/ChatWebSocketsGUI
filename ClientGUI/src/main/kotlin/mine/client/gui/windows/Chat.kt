@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent
 import javax.swing.JFrame
 import javax.swing.JOptionPane
 
-abstract class Chat(protected val _client: Client, protected val gui: GUI) : JFrame() {
+abstract class Chat(protected val gui: GUI) : JFrame() {
 
     init {
         this.addWindowListener(object : WindowAdapter() {

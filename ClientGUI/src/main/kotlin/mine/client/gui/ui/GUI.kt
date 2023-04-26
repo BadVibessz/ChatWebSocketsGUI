@@ -5,7 +5,7 @@ import mine.client.gui.windows.ChatWindow
 import mine.client.gui.windows.LoginWindow
 import mine.client.gui.windows.RegisterWindow
 
-class GUI(private val _client: Client) : UI() {
+class GUI(sendCallback: (String) -> Unit) : UI(sendCallback) {
 
     var chatWindow: ChatWindow? = null
     var loginWindow: LoginWindow? = null
@@ -19,14 +19,14 @@ class GUI(private val _client: Client) : UI() {
         loginWindow?.dispose()
         loginWindow = null
 
-        registerWindow = RegisterWindow(_client, this)
+        registerWindow = RegisterWindow(this)
     }
 
     override fun requestLogin() {
         registerWindow?.dispose()
         registerWindow = null
 
-        loginWindow = LoginWindow(_client, this)
+        loginWindow = LoginWindow(this)
     }
 
     override fun showAlert(msg: String) {
@@ -47,7 +47,7 @@ class GUI(private val _client: Client) : UI() {
         loginWindow?.dispose()
         loginWindow = null
 
-        chatWindow = ChatWindow(_client, this)
+        chatWindow = ChatWindow(this)
         showAlert("You have successfully logged in!\n")
     }
 

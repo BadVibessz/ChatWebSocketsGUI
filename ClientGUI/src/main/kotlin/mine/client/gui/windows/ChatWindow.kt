@@ -12,7 +12,7 @@ import javax.swing.text.StyleConstants
 import javax.swing.text.StyleContext
 
 
-class ChatWindow(client: Client, gui: GUI) : Chat(client, gui) {
+class ChatWindow(gui: GUI) : Chat(gui) {
 
     private val _minSize = Dimension(200, 300)
     private val _startSize = Dimension(600, 400)
@@ -75,7 +75,9 @@ class ChatWindow(client: Client, gui: GUI) : Chat(client, gui) {
 
         _messageTextField.addActionListener {
             // todo: send to server
-            _client.sendMessage(_messageTextField.getText())
+            //_client.sendMessage(_messageTextField.getText())
+            gui.sendToServer(_messageTextField.getText())
+
             _messageTextField.text = ""
         }
     }

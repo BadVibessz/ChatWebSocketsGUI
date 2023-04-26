@@ -1,7 +1,7 @@
 package mine.client.gui.ui
 
 
-abstract class UI {
+abstract class UI(private val sendCallback: (String) -> Unit) {
 
     abstract fun requestRegistration()
     abstract fun requestLogin()
@@ -10,6 +10,6 @@ abstract class UI {
     abstract fun updateUserList(users: List<String>)
     abstract fun init()
 
-    fun sendToServer(message: String, callback: (String) -> Unit) = callback(message)
+    fun sendToServer(message: String) = sendCallback(message)
 
 }

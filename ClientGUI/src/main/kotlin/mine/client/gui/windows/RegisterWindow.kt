@@ -6,7 +6,7 @@ import mine.io.utils.Hasher
 import java.awt.Dimension
 import javax.swing.*
 
-class RegisterWindow (client: Client, gui: GUI) : Chat(client, gui) {
+class RegisterWindow (gui: GUI) : Chat(gui) {
 
     private val _loginLabel = JLabel("Nickname")
     private val _passwordLabel = JLabel("Password")
@@ -89,8 +89,12 @@ class RegisterWindow (client: Client, gui: GUI) : Chat(client, gui) {
 
             val request = "register $nickname $hashedPassword"
 
-            _client.sendMessage("register")
-            _client.sendMessage(request)
+
+           // gui.sendToServer("register")
+            gui.sendToServer(request)
+
+            //_client.sendMessage("register")
+            //_client.sendMessage(request)
         }
 
         _loginButton.addActionListener {

@@ -7,7 +7,7 @@ import java.awt.Dimension
 import javax.swing.*
 import javax.swing.JOptionPane.showMessageDialog
 
-class LoginWindow(client: Client, gui: GUI) : Chat(client, gui) {
+class LoginWindow(gui: GUI) : Chat(gui) {
 
     private val _loginLabel = JLabel("Nickname")
     private val _passwordLabel = JLabel("Password")
@@ -92,8 +92,11 @@ class LoginWindow(client: Client, gui: GUI) : Chat(client, gui) {
 
             val request = "login $nickname $hashedPassword"
 
-            _client.sendMessage("login")
-            _client.sendMessage(request)
+            //gui.sendToServer("login")
+            gui.sendToServer(request)
+
+            //_client.sendMessage("login")
+            //_client.sendMessage(request)
         }
 
         _registerButton.addActionListener {
